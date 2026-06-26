@@ -324,14 +324,43 @@ function renderCart() {
     const line = document.createElement("div");
     line.className = "cart-line";
     line.innerHTML = `
-      <strong>${item.product.name}</strong>
-      <small>${item.product.sku} x ${item.qty} - ${formatRupiah(item.qty * item.price)}</small>
+      <div class="cart-line-head">
+        <div>
+          <strong>${item.product.name}</strong>
+          <small>${item.product.sku} x ${item.qty} - ${formatRupiah(item.qty * item.price)}</small>
+        </div>
+        <button class="cart-remove" type="button" data-remove-cart="${item.product.sku}" aria-label="Hapus ${item.product.name}">
+          <svg aria-hidden="true" viewBox="0 0 24 24">
+            <path d="M18 6 6 18M6 6l12 12" />
+          </svg>
+        </button>
+      </div>
+      <div class="cart-qty-row">
+        <button type="button" data-cart-step="-1" data-sku="${item.product.sku}" aria-label="Kurangi ${item.product.name}" ${item.qty <= item.product.minOrder ? "disabled" : ""}>-</button>
+        <span>${item.qty} pcs</span>
+        <button type="button" data-cart-step="1" data-sku="${item.product.sku}" aria-label="Tambah ${item.product.name}">+</button>
+      </div>
     `;
     elements.cartItems.appendChild(line);
   });
 
   elements.cartBadge.textContent = String(totalQty);
   elements.cartTotal.textContent = formatRupiah(totalPrice);
+}
+
+function updateCartQty(sku, step) {
+  const item = state.cart.get(sku);
+  if (!item) return;
+
+  const nextQty = Math.max(item.product.minOrder, item.qty + step);
+  state.cart.set(sku, { ...item, qty: nextQty });
+
+  renderCart();
+}
+
+function removeFromCart(sku) {
+  state.cart.delete(sku);
+  renderCart();
 }
 
 function renderSummary() {
@@ -433,6 +462,19 @@ function bindEvents() {
     }
 
     if (addButton) addToCart(addButton.dataset.add);
+  });
+
+  elements.cartItems.addEventListener("click", (event) => {
+    const stepButton = event.target.closest("[data-cart-step]");
+    const removeButton = event.target.closest("[data-remove-cart]");
+
+    if (stepButton) {
+      updateCartQty(stepButton.dataset.sku, Number(stepButton.dataset.cartStep));
+    }
+
+    if (removeButton) {
+      removeFromCart(removeButton.dataset.removeCart);
+    }
   });
 
   document.querySelector("#openCartButton").addEventListener("click", () => elements.cartPanel.classList.add("open"));
