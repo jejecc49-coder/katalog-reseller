@@ -1,0 +1,177 @@
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Katalog Reseller</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <aside class="desktop-sidebar" aria-label="Panel katalog">
+      <div class="sidebar-brand">
+        <span class="brand-mark">R</span>
+        <div>
+          <h1 id="sidebarStoreTitle">Katalog Reseller</h1>
+          <small>Katalog dari Google Sheets</small>
+        </div>
+      </div>
+
+      <section class="sidebar-section">
+        <div class="sidebar-section-head">
+          <h2>Pengaturan</h2>
+          <button class="text-action" id="sidebarSaveButton" type="button">Simpan</button>
+        </div>
+        <label>
+          CSV Google Sheets
+          <input id="sidebarSheetUrlInput" type="url" placeholder="Link CSV Google Sheets" />
+        </label>
+        <label>
+          WhatsApp Admin
+          <input id="sidebarWhatsappInput" type="tel" placeholder="62812xxxxxxx" />
+        </label>
+        <p class="save-confirm" id="saveConfirm" hidden>Pengaturan tersimpan.</p>
+        <button class="secondary-button full-width" id="guideButton" type="button">Panduan setup sheet</button>
+      </section>
+
+      <section class="sidebar-section">
+        <h2>Kategori</h2>
+        <nav class="category-nav" id="categoryNav" aria-label="Kategori produk"></nav>
+      </section>
+
+      <button class="danger-button" id="resetDemoButton" type="button">Reset data contoh</button>
+    </aside>
+
+    <header class="topbar">
+      <div class="brand">
+        <span class="brand-mark">KR</span>
+        <div>
+          <p class="eyebrow">Katalog Online</p>
+          <h1 id="storeTitle">Katalog Reseller</h1>
+        </div>
+      </div>
+      <button class="icon-button" id="settingsButton" aria-label="Pengaturan katalog" title="Pengaturan">
+        <svg aria-hidden="true" viewBox="0 0 24 24">
+          <path d="M12 15.5A3.5 3.5 0 1 0 12 8a3.5 3.5 0 0 0 0 7.5Z" />
+          <path d="M19.4 15a1.7 1.7 0 0 0 .34 1.88l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06A1.7 1.7 0 0 0 15 19.37a1.7 1.7 0 0 0-1 .6 1.7 1.7 0 0 0-.4 1.12V21a2 2 0 1 1-4 0v-.1A1.7 1.7 0 0 0 8 19.37a1.7 1.7 0 0 0-1.88.34l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06A1.7 1.7 0 0 0 3.63 15a1.7 1.7 0 0 0-.6-1A1.7 1.7 0 0 0 1.91 13H2a2 2 0 1 1 0-4h.1A1.7 1.7 0 0 0 3.63 7a1.7 1.7 0 0 0-.34-1.88l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06A1.7 1.7 0 0 0 8 2.63a1.7 1.7 0 0 0 1-.6A1.7 1.7 0 0 0 9.4.91V1a2 2 0 1 1 4 0v.1A1.7 1.7 0 0 0 15 2.63a1.7 1.7 0 0 0 1.88-.34l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06A1.7 1.7 0 0 0 19.37 7a1.7 1.7 0 0 0 .6 1 1.7 1.7 0 0 0 1.12.4H21a2 2 0 1 1 0 4h-.1A1.7 1.7 0 0 0 19.4 15Z" />
+        </svg>
+      </button>
+    </header>
+
+    <main>
+      <section class="controls" aria-label="Filter katalog">
+        <label class="search">
+          <svg aria-hidden="true" viewBox="0 0 24 24">
+            <path d="m21 21-4.3-4.3m2.3-5.2a7.5 7.5 0 1 1-15 0 7.5 7.5 0 0 1 15 0Z" />
+          </svg>
+          <input id="searchInput" type="search" placeholder="Cari nama produk atau SKU" />
+        </label>
+
+        <select id="categorySelect" aria-label="Pilih kategori">
+          <option value="all">Semua kategori</option>
+        </select>
+
+        <button class="icon-button refresh-button" id="refreshButton" aria-label="Perbarui data" title="Perbarui data">
+          <svg aria-hidden="true" viewBox="0 0 24 24">
+            <path d="M21 12a9 9 0 0 1-15.5 6.2L3 16" />
+            <path d="M3 16v5h5" />
+            <path d="M3 12A9 9 0 0 1 18.5 5.8L21 8" />
+            <path d="M21 8V3h-5" />
+          </svg>
+        </button>
+      </section>
+
+      <section class="mode-banner">
+        <div>
+          <p class="eyebrow" id="modeTitle">Katalog khusus reseller</p>
+          <p id="modeDescription">Minimal order mengikuti tiap produk. Harga grosir chat admin untuk kuantitas besar.</p>
+        </div>
+        <strong>Harga grosir chat admin</strong>
+      </section>
+
+      <section class="summary-strip">
+        <span><strong id="totalProducts">0</strong> produk</span>
+        <span id="lastUpdated">Menunggu data</span>
+      </section>
+
+      <div class="status" id="statusBox" hidden></div>
+
+      <section class="catalog" id="catalog" aria-live="polite"></section>
+    </main>
+
+    <aside class="cart" id="cartPanel" aria-label="Keranjang order">
+      <div class="cart-header">
+        <div>
+          <p class="eyebrow">Order</p>
+          <h2>Keranjang</h2>
+        </div>
+        <button class="icon-button" id="closeCartButton" aria-label="Tutup keranjang" title="Tutup">
+          <svg aria-hidden="true" viewBox="0 0 24 24">
+            <path d="M18 6 6 18M6 6l12 12" />
+          </svg>
+        </button>
+      </div>
+      <div class="cart-items" id="cartItems"></div>
+      <div class="cart-footer">
+        <div class="cart-total">
+          <span>Total estimasi</span>
+          <strong id="cartTotal">Rp0</strong>
+        </div>
+        <button class="primary-button" id="checkoutButton">Order via WhatsApp</button>
+      </div>
+    </aside>
+
+    <button class="floating-cart" id="openCartButton" aria-label="Buka keranjang">
+      <svg aria-hidden="true" viewBox="0 0 24 24">
+        <path d="M6 6h15l-1.5 8.5H8L6 3H3" />
+        <path d="M9 20a1 1 0 1 0 0-2 1 1 0 0 0 0 2ZM18 20a1 1 0 1 0 0-2 1 1 0 0 0 0 2Z" />
+      </svg>
+      <span id="cartBadge">0</span>
+    </button>
+
+    <dialog class="settings" id="settingsDialog">
+      <form method="dialog" class="settings-content">
+        <div class="settings-head">
+          <div>
+            <p class="eyebrow">Sumber Data</p>
+            <h2>Google Sheets</h2>
+          </div>
+          <button class="icon-button" value="cancel" aria-label="Tutup pengaturan" title="Tutup">
+            <svg aria-hidden="true" viewBox="0 0 24 24">
+              <path d="M18 6 6 18M6 6l12 12" />
+            </svg>
+          </button>
+        </div>
+
+        <label>
+          Link CSV Google Sheets
+          <input id="sheetUrlInput" type="url" placeholder="https://docs.google.com/spreadsheets/d/e/.../pub?output=csv" />
+        </label>
+
+        <label>
+          Nomor WhatsApp Seller
+          <input id="whatsappInput" type="tel" placeholder="62812xxxxxxx" />
+        </label>
+
+        <div class="settings-actions">
+          <button class="secondary-button" id="demoButton" type="button">Pakai data contoh</button>
+          <button class="primary-button" id="saveSettingsButton" value="default">Simpan</button>
+        </div>
+
+        <div class="sheet-guide">
+          <h3>Format Google Sheets</h3>
+          <code>SKU, Nama Produk, Kategori, Foto, Harga, Minimal Order</code>
+          <p>Publish sheet sebagai CSV, lalu tempel link CSV di kolom sumber data.</p>
+        </div>
+      </form>
+    </dialog>
+
+    <script src="./config.js"></script>
+    <script src="./app.js"></script>
+  </body>
+</html>
